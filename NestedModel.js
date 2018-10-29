@@ -1,7 +1,7 @@
-const BaseModel = require("./BaseModel");
-
-const Nested = proxy => {
-  return BaseModel(proxy);
+const { BaseModel } = require("./BaseModel");
+const R = require("ramda");
+const Nested = options => {
+  return BaseModel(options);
 };
 
 module.exports = {
