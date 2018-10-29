@@ -1,0 +1,31 @@
+{
+  "name": "mongo-orm-proto",
+  "version": "1.0.0",
+  "description": "MongoDB ORM for JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arsenii-proto/mongo-orm-proto.git"
+  },
+  "keywords": [
+    "ES6",
+    "ORM",
+    "mongo",
+    "mongodb",
+    "database",
+    "schema",
+    "nested-documents"
+  ],
+  "author": "Arsenii Proto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arsenii-proto/mongo-orm-proto/issues"
+  },
+  "homepage": "https://github.com/arsenii-proto/mongo-orm-proto#readme",
+  "dependencies": {
+    "mongodb": "^3.1.8"
+  }
+}
