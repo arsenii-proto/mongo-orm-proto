@@ -11,7 +11,6 @@
     "url": "git+https://github.com/arsenii-proto/mongo-orm-proto.git"
   },
   "keywords": [
-    "ES6",
     "ORM",
     "mongo",
     "mongodb",
@@ -26,6 +25,7 @@
   },
   "homepage": "https://github.com/arsenii-proto/mongo-orm-proto#readme",
   "dependencies": {
-    "mongodb": "^3.1.8"
+    "mongodb": "^3.1.8",
+    "ramda": "^0.25.0"
   }
 }
