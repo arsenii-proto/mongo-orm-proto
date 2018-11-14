@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "jquery": true,
+    "es6": true
+  },
+  "globals": {
+    "gigya": true,
+    "Livefyre": true,
+    "analytics": true,
+    "Cookies": true,
+    "URI": true,
+    "renderFlashMessage": true
+  },
+  "settings": {},
+  "extends": ["eslint:recommended", "./js_rules.json", "prettier"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018,
+    "esversion": 6
+  }
+}
