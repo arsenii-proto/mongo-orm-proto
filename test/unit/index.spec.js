@@ -13,6 +13,13 @@ describe("@/index.js [MongoZilla]", () => {
 
   it("should have method connect", () => {
     const { connect } = getModule();
+    const mongoose = require("mongoose");
+
+    const AA = mongoose.model(
+      "AA",
+      new mongoose.Schema({ name: String }),
+      "test"
+    );
 
     expect(connect).to.be.a("function");
   });
