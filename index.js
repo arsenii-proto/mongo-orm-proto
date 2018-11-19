@@ -1,7 +1,9 @@
+const connection = require("./src/database/connection");
+
 /** @type {MongoZilla.Facade} */
-const MongoZila = {
+const mongozilla = {
   name: "mongozilla",
-  model: () => {}
+  ...connection
 };
 
-module.exports = MongoZila;
+module.exports = Object.freeze(mongozilla);

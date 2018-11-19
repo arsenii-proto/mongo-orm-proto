@@ -1,80 +1,46 @@
 const { MongoClient } = require("mongodb");
+const queryByCollection = require("./query");
 
-/** @type {MongoZilla.Connection.Instance} */
-let defaultConnetion = null;
-
-defaultConnetion;
-
-module.exports = {
-  create(url, options) {
-    const client = new MongoClient(url, options);
-    const con = {
-      model(schema) {
-        return () => schema || client;
+let defaultConnection = null;
+/** @type {MongoZilla.Connection.ConnectInterface} */
+const connect = (url, databaseName, options) =>
+  MongoClient.connect(
+    url,
+    options
+  ).then(client => {
+    const databse = client.db(databaseName);
+    /** @type {MongoZilla.Connection.Instance} */
+    const connection = {
+      isConnected() {
+        return client.isConnected();
       },
-      connected() {
-        return false;
+      collection(colectionName) {
+        return queryByCollection(databse.collection(colectionName));
       }
     };
 
-    if (!defaultConnetion) {
-      defaultConnetion = con;
+    if (!defaultConnection) {
+      defaultConnection = connection;
     }
 
-    return con;
-  },
+    return connection;
+  });
 
-  model(schema) {
-    if (defaultConnetion && defaultConnetion.connected()) {
-      return defaultConnetion.model(schema);
+/** @type {MongoZilla.Connection.Facade} */
+const connection = {
+  connect,
+  isConnected() {
+    if (defaultConnection) {
+      return defaultConnection.isConnected();
     }
-
-    throw new Error("There are not any active database connection");
-    // TODO: Write more eligible error message
+    return false;
   },
-
-  connected() {
-    return (defaultConnetion && defaultConnetion.connected()) || false;
-  },
-
-  database() {
-    if (defaultConnetion && defaultConnetion.connected()) {
-      return defaultConnetion.database();
+  collection(collectionName) {
+    if (defaultConnection) {
+      return defaultConnection.collection(collectionName);
     }
-
-    throw new Error("There are not any active database connection");
-    // TODO: Write more eligible error message
-  },
-
-  collection(...args) {
-    if (defaultConnetion && defaultConnetion.connected()) {
-      return defaultConnetion.collection.appy(null, args);
-    }
-
-    throw new Error("There are not any active database connection");
-    // TODO: Write more eligible error message
-  },
-
-  reconect() {
-    if (defaultConnetion) {
-      if (!defaultConnetion.connected()) {
-        return defaultConnetion.reconect();
-      }
-
-      throw new Error("Current database connection are conected");
-      // TODO: Write more eligible error message
-    }
-
-    throw new Error("There are not any database connection");
-    // TODO: Write more eligible error message
-  },
-
-  close() {
-    if (defaultConnetion && defaultConnetion.connected()) {
-      return defaultConnetion.close();
-    }
-
-    throw new Error("There are not any active database connection");
-    // TODO: Write more eligible error message
+    throw new Error("Default database connection are not initiated");
   }
 };
+
+module.exports = Object.freeze(connection);
