@@ -57,11 +57,19 @@ declare module MongoZilla.Connection {
 }
 
 declare module MongoZilla.Query {
-  type Contructor = {
+  type FromColectionContructor = {
     (collection: Object): Instance;
   };
 
+  type FromModelContructor = {
+    (model: ModelFactory.Factory): Instance;
+  };
+
   type Instance = {};
+  type Facade = {
+    fromCollection: FromColectionContructor;
+    fromModel: FromModelContructor;
+  };
 }
 
 declare module MongoZilla.ModelFactory {

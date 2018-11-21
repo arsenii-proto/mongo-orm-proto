@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+  </head>
+  <body>
+    <script>
+      window.wsConnection = (() => {
+        const target = {
+          buffer: [],
+          listeners: {
+            connect: [
+              connection => {
+                target.connection = connection;
+                target.buffer.map(data => connection.send(data));
+                target.buffer = [];
+              }
+            ],
+            close: [() => setTimeout(() => connect(target.url), 500)]
+          },
+          on(event, cb) {
+            target.listeners[event] = target.listeners[event] || [];
+            target.listeners[event].push(cb);
+          },
+          trigger(event, data) {
+            console.log({ event, data });
+            (target.listeners[event] || []).forEach(cb => cb(data));
+          },
+          get connected() {
+            if (target.connection) {
+              return target.connection.readyState == WebSocket.OPEN;
+            }
+            return false;
+          },
+          connection: null,
+          url: null
+        };
+
+        const connect = url => {
+          target.url = url;
+          if (target.connection && target.connected) {
+            if (target.connection.url != url) {
+              target.connection.close();
+            }
+            return;
+          }
+
+          if (target.connection) {
+            target.connection.onclose = target.connection.onerror = target.connection = null;
+          }
+
+          const connection = new WebSocket(url);
+          connection.onopen = () => target.trigger("connect", connection);
+          connection.onclose = () => target.trigger("close");
+          connection.onerror = () => connection.close();
+          connection.onmessage = ({ data }) => target.trigger("message", data);
+        };
+
+        return {
+          onConnect(cb) {
+            if (target.connected && target.connection) {
+              cb(target.connection);
+            } else {
+              target.on("connect", cb);
+            }
+          },
+          onMessage(cb) {
+            target.on("message", m => cb(m, target.connection));
+          },
+          connect(url) {
+            connect(url);
+          },
+          send(data) {
+            if (target.connected && target.connection) {
+              target.connection.send(data);
+            } else {
+              target.buffer.push(data);
+            }
+          },
+          close() {
+            if (target.connected && target.connection) {
+              target.connection.close();
+            }
+          },
+          target
+        };
+      })();
+    </script>
+  </body>
+</html>
