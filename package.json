@@ -1,7 +1,7 @@
 {
   "name": "mongozilla",
   "version": "1.0.0",
-  "description": "MongoDB ORM for JS",
+  "description": "MongoDB ODM for JS",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require ./test/base.js --recursive ./test",
