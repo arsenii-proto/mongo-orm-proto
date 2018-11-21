@@ -22,7 +22,8 @@
     "mongodb",
     "database",
     "schema",
-    "nested-documents"
+    "nested-documents",
+    "mixins"
   ],
   "author": "Arsenii Proto",
   "license": "ISC",
