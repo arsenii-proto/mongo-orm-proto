@@ -1,5 +1,5 @@
 {
-  "name": "mongo-orm-proto",
+  "name": "mongozilla",
   "version": "1.0.0",
   "description": "MongoDB ORM for JS",
   "main": "index.js",
